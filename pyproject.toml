@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "aws-python-http-api"
+version = "0.1.0"
+description = "aws python api with aws lambda power tools"
+authors = ["Allan Gallo <allan.gallo.guerra@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+aws-lambda-powertools = "^3.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
