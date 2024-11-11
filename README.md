@@ -22,6 +22,8 @@ This template does not include any kind of persistence (database). For more adva
 
 ```
 serverless deploy
+
+sls plugin install -n serverless-offline
 ```
 
 After deploying, you should see output similar to:
