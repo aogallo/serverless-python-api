@@ -9,6 +9,9 @@ provider:
   name: aws
   runtime: python3.12
 
+plugins:
+  - serverless-offline
+
 functions:
   hello:
     handler: app.lambda_handler
