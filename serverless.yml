@@ -17,6 +17,9 @@ functions:
     handler: app.lambda_handler
     events:
       - httpApi:
+          path: /
+          method: get
+      - httpApi:
           path: /hello
           method: get
       - httpApi:
