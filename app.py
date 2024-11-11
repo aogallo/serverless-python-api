@@ -4,10 +4,9 @@ from aws_lambda_powertools.metrics import MetricUnit
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.logging import correlation_paths
 
-logger = Logger()
-tracer = Tracer()
+logger = Logger(service="APP")
+tracer = Tracer(service="APP")
 app = APIGatewayHttpResolver()
-cold_start = True
 metrics = Metrics(namespace="MyApi", service="APP")
 
 
@@ -28,15 +27,20 @@ def hello():
     body = {
         "message": "Go Serverless v4.0! Your function executed successfully!",
     }
-
     metrics.add_metric(name="SuccessfullGreetings", unit=MetricUnit.Count, value=1)
     response = {"statusCode": 200, "body": body}
 
     return response
 
 
-@logger.inject_lambda_context(correlation_id_path=correlation_paths.API_GATEWAY_HTTP)
 @tracer.capture_lambda_handler
+@logger.inject_lambda_context(
+    correlation_id_path=correlation_paths.API_GATEWAY_HTTP, log_event=True
+)
 @metrics.log_metrics(capture_cold_start_metric=True)
 def lambda_handler(event: dict, context: LambdaContext) -> dict:
-    return app.resolve(event, context)
+    try:
+        return app.resolve(event, context)
+    except Exception as e:
+        logger.exception(e)
+        raise
